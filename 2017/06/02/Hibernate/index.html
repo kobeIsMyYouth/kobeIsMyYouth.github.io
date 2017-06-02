@@ -1,0 +1,886 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="基础hello hibernate 实体类和数据库表的映射文件解析  12345678910111213141516171819202122&amp;lt;!-- 实体类和数据库的映射文件：Entity.hbm.xml --&amp;gt;&amp;lt;?xml version=&quot;1.0&quot;?&amp;gt;&amp;lt;!DOCTYPE hibernate-mapping PUBLIC        &quot;-//Hibernate/Hi">
+<meta name="keywords" content="java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hibernate学习笔记">
+<meta property="og:url" content="http://yoursite.com/2017/06/02/Hibernate/index.html">
+<meta property="og:site_name" content="huangting的后花园">
+<meta property="og:description" content="基础hello hibernate 实体类和数据库表的映射文件解析  12345678910111213141516171819202122&amp;lt;!-- 实体类和数据库的映射文件：Entity.hbm.xml --&amp;gt;&amp;lt;?xml version=&quot;1.0&quot;?&amp;gt;&amp;lt;!DOCTYPE hibernate-mapping PUBLIC        &quot;-//Hibernate/Hi">
+<meta property="og:updated_time" content="2017-06-02T14:33:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hibernate学习笔记">
+<meta name="twitter:description" content="基础hello hibernate 实体类和数据库表的映射文件解析  12345678910111213141516171819202122&amp;lt;!-- 实体类和数据库的映射文件：Entity.hbm.xml --&amp;gt;&amp;lt;?xml version=&quot;1.0&quot;?&amp;gt;&amp;lt;!DOCTYPE hibernate-mapping PUBLIC        &quot;-//Hibernate/Hi">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/06/02/Hibernate/"/>
+
+
+
+
+
+  <title>Hibernate学习笔记 | huangting的后花园</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">huangting的后花园</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/02/Hibernate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="huangting">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="huangting的后花园">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Hibernate学习笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-02T22:33:52+08:00">
+                2017-06-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><h3 id="hello-hibernate"><a href="#hello-hibernate" class="headerlink" title="hello hibernate"></a>hello hibernate</h3><ul>
+<li>实体类和数据库表的映射文件解析</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">&lt;!-- 实体类和数据库的映射文件：Entity.hbm.xml --&gt;</span></div><div class="line">&lt;?xml version="1.0"?&gt;</div><div class="line"><span class="meta">&lt;!DOCTYPE hibernate-mapping PUBLIC</span></div><div class="line">        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"</div><div class="line">        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"&gt;</div><div class="line"> <span class="comment">&lt;!-- packages属性指定实体类所在的包 --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">hibernate-mapping</span> <span class="attr">package</span>=<span class="string">"com.how2java.pojo"</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!-- class标签的name属性指定实体类的类名，table指定实体类对应的数据库表 --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">class</span> <span class="attr">name</span>=<span class="string">"Product"</span> <span class="attr">table</span>=<span class="string">"product_"</span>&gt;</span></div><div class="line">    	<span class="comment">&lt;!-- id标签指定数据库表的逐渐生成策略，name表示实体类中的属性名，column表示数据库中的字段名称 --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">id</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">column</span>=<span class="string">"id"</span>&gt;</span></div><div class="line">        	<span class="comment">&lt;!-- native表示按照数据库指定的方式生成主键 --&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">generator</span> <span class="attr">class</span>=<span class="string">"native"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">generator</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">id</span>&gt;</span></div><div class="line">        <span class="comment">&lt;!-- 未指明column属性的值，那么字段的值默认为name的值 --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"name"</span> /&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"price"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">class</span>&gt;</span></div><div class="line">     </div><div class="line"><span class="tag">&lt;/<span class="name">hibernate-mapping</span>&gt;</span></div></pre></td></tr></table></figure>
+<a id="more"></a>
+<ul>
+<li>配置hibernate.cfg.xml</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">&lt;!-- hibernate的配置文件（连接数据库） --&gt;</span></div><div class="line">&lt;?xml version='1.0' encoding='utf-8'?&gt;</div><div class="line"><span class="meta">&lt;!DOCTYPE hibernate-configuration PUBLIC</span></div><div class="line">       "-//Hibernate/Hibernate Configuration DTD 3.0//EN"</div><div class="line">"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd"&gt;</div><div class="line"> </div><div class="line"><span class="tag">&lt;<span class="name">hibernate-configuration</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">session-factory</span>&gt;</span></div><div class="line">        <span class="comment">&lt;!-- 数据库连接设置 --&gt;</span></div><div class="line">        <span class="comment">&lt;!-- 指定数据库连接的驱动名称 --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"connection.driver_class"</span>&gt;</span>com.mysql.jdbc.Driver<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">        <span class="comment">&lt;!-- 指定数据库连接的URL --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"connection.url"</span>&gt;</span>jdbc:mysql://localhost:3306/test?characterEncoding=UTF-8<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">        <span class="comment">&lt;!-- 指定数据库连接的用户名 --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"connection.username"</span>&gt;</span>root<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">        <span class="comment">&lt;!-- 指定数据库连接的用户的密码 --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"connection.password"</span>&gt;</span>admin<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">        <span class="comment">&lt;!-- 配置SQL方言 --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dialect"</span>&gt;</span>org.hibernate.dialect.MySQLDialect<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">        <span class="comment">&lt;!-- 将session绑定到当前线程 --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"current_session_context_class"</span>&gt;</span>thread<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">        <span class="comment">&lt;!-- 将SQL语句打印到控制台 --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"show_sql"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">        <span class="comment">&lt;!-- 自动更新hibernate的ddl语句 --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hbm2ddl.auto"</span>&gt;</span>update<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">        <span class="comment">&lt;!-- 加载映射文件, resource属性指定XML文件的路径 --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">mapping</span> <span class="attr">resource</span>=<span class="string">"com/how2java/pojo/Product.hbm.xml"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">session-factory</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">hibernate-configuration</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><ul>
+<li>向数据库中插入十条数据代码演示</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestHibernate</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    	<span class="comment">//获取session工厂对象（单例）</span></div><div class="line">        SessionFactory sf = <span class="keyword">new</span> Configuration().configure().buildSessionFactory();</div><div class="line">        <span class="comment">//获取会话session对象</span></div><div class="line">        Session s = sf.openSession();</div><div class="line">        <span class="comment">//开启事务（必须开启事务才能保证对象能够持久化入数据库，不然对象只是保存在hibernate的缓存中）</span></div><div class="line">        s.beginTransaction();</div><div class="line">        <span class="comment">//向数据库中保存十个对象</span></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</div><div class="line">            Product p = <span class="keyword">new</span> Product();</div><div class="line">            p.setName(<span class="string">"iphone"</span>+i);</div><div class="line">            p.setPrice(i);</div><div class="line">            s.save(p);          </div><div class="line">        &#125;</div><div class="line">        <span class="comment">//提交事务</span></div><div class="line">        s.getTransaction().commit();</div><div class="line">        <span class="comment">//关闭事务</span></div><div class="line">        s.close();</div><div class="line">        <span class="comment">//关闭session工场</span></div><div class="line">        sf.close();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="对象状态"><a href="#对象状态" class="headerlink" title="对象状态"></a>对象状态</h3><ul>
+<li><p>实体类对象在Hibernate中有3中状态，分别是瞬时，持久和托管</p>
+<blockquote>
+<ul>
+<li><code>瞬时</code>:指的是没有和hibernate发生任何关系，在数据库中也没有对应的记录，一旦JVM结束，这个对象也就结束了</li>
+<li><code>持久</code>:指的是一个对象和hibernate发生关系，有对应的session，并且在数据库中有对应的一条记录</li>
+<li><code>托管</code>:指的是一个对象虽然在数据库中有对应的一条记录，但是它所对应的session已经关闭</li>
+</ul>
+</blockquote>
+</li>
+<li><p>代码演示三种状态</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">  </div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestHibernate</span> </span>&#123;</div><div class="line">   </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">  		</div><div class="line">  		<span class="comment">//获取会话工厂对象</span></div><div class="line">        SessionFactory sf = <span class="keyword">new</span> Configuration().configure().buildSessionFactory();</div><div class="line">  		<span class="comment">//获取会话对象</span></div><div class="line">        Session s = sf.openSession();</div><div class="line">        <span class="comment">//开启事务</span></div><div class="line">        s.beginTransaction();</div><div class="line">        Product p = <span class="keyword">new</span> Product();</div><div class="line">        p.setName(<span class="string">"p1"</span>);</div><div class="line">        System.out.println(<span class="string">"此时p是瞬时状态"</span>);</div><div class="line">        s.save(p);</div><div class="line">        System.out.println(<span class="string">"此时p是持久状态"</span>);</div><div class="line">        s.getTransaction().commit();</div><div class="line">        s.close();</div><div class="line">        System.out.println(<span class="string">"此时p是脱管状态"</span>);</div><div class="line">        sf.close();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="获取"><a href="#获取" class="headerlink" title="获取"></a>获取</h3><ul>
+<li>通过session的get方法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Session s = sf.openSession();</div><div class="line">Product p = (Product) s.get(Product.class, <span class="number">6</span>);<span class="comment">//6是该对象的ID号</span></div></pre></td></tr></table></figure>
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><ul>
+<li>通过session的delete方法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Session s = sf.openSession();</div><div class="line">Product p = (Product) s.get(Product.class, <span class="number">5</span>);</div><div class="line">s.delete(p);</div></pre></td></tr></table></figure>
+<h3 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h3><ul>
+<li>修改一个对象的属性并更新到数据库,通过session的update()<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Session s = sf.openSession();</div><div class="line">Product p = (Product) s.get(Product.class, <span class="number">6</span>);</div><div class="line">p.setName(<span class="string">"new"</span>);</div><div class="line">s.update(p);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="查询-hql"><a href="#查询-hql" class="headerlink" title="查询-hql"></a>查询-hql</h3><blockquote>
+<p>HQL(Hibernate Query Language) 是hibernate专门用于查询数据的语句，有别于SQL，HQL更接近于面向对象的思维方式。</p>
+</blockquote>
+<ul>
+<li>使用HQL进行模糊查询<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//获取session工厂对象</span></div><div class="line">  SessionFactory sf = <span class="keyword">new</span> Configuration().configure().buildSessionFactory();</div><div class="line">	<span class="comment">//获取session对象</span></div><div class="line">   Session s = sf.openSession();</div><div class="line">   <span class="comment">//开启事务</span></div><div class="line">   s.beginTransaction();</div><div class="line">	</div><div class="line">	<span class="comment">//模糊匹配的字符串</span></div><div class="line">   String name = <span class="string">"iphone"</span>;</div><div class="line">   <span class="comment">//拼装查询语句（？是占位符）</span></div><div class="line">   Query q =s.createQuery(<span class="string">"from Product p where p.name like ?"</span>);</div><div class="line">   <span class="comment">//为占位符设置值</span></div><div class="line">   q.setString(<span class="number">0</span>, <span class="string">"%"</span>+name+<span class="string">"%"</span>);</div><div class="line">  	<span class="comment">//调用list()方法获取查询结果</span></div><div class="line">   List&lt;Product&gt; ps= q.list();</div><div class="line">   <span class="keyword">for</span> (Product p : ps) &#123;</div><div class="line">       System.out.println(p.getName());</div><div class="line">   &#125;</div><div class="line">        </div><div class="line">   s.getTransaction().commit();</div><div class="line">   s.close();</div><div class="line">   sf.close();</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="查询-Criteria"><a href="#查询-Criteria" class="headerlink" title="查询-Criteria"></a>查询-Criteria</h3><blockquote>
+<p>使用Criteria进行数据查询。<br>与HQL和SQL的区别是Criteria 完全是 面向对象的方式在进行数据查询，将不再看到有sql语句的痕迹</p>
+</blockquote>
+<ul>
+<li>使用Criteria,根据name进行模糊查询<blockquote>
+<ul>
+<li>通过session的createCriteria创建一个Criteria对象。 </li>
+<li>Criteria.add增加约束。</li>
+<li>调用list()方法返回查询结果的集合</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">SessionFactory sf = <span class="keyword">new</span> Configuration().configure().buildSessionFactory();</div><div class="line">  </div><div class="line">Session s = sf.openSession();</div><div class="line">s.beginTransaction();</div><div class="line"></div><div class="line"><span class="comment">//模糊匹配的字符串 </span></div><div class="line">String name = <span class="string">"iphone"</span>;</div><div class="line"><span class="comment">//获取Criteria对象</span></div><div class="line">Criteria c= s.createCriteria(Product.class);</div><div class="line"><span class="comment">//添加约束</span></div><div class="line">c.add(Restrictions.like(<span class="string">"name"</span>, <span class="string">"%"</span>+name+<span class="string">"%"</span>));</div><div class="line">List&lt;Product&gt; ps = c.list();</div><div class="line"><span class="keyword">for</span> (Product p : ps) &#123;</div><div class="line">    System.out.println(p.getName());</div><div class="line">&#125;</div><div class="line">s.getTransaction().commit();</div><div class="line">s.close();</div><div class="line">sf.close();</div></pre></td></tr></table></figure>
+<h3 id="查询-标准sql"><a href="#查询-标准sql" class="headerlink" title="查询-标准sql"></a>查询-标准sql</h3><blockquote>
+<p>通过标准SQL语句进行查询<br>Hibernate依然保留了对标准SQL语句的支持，在一些场合，比如多表联合查询，并且有分组统计函数的情况下，标准SQL语句依然是效率较高的一种选择</p>
+</blockquote>
+<ul>
+<li>使用标准SQL语句进行模糊查询</li>
+</ul>
+<blockquote>
+<p>使用Session的createSQLQuery方法执行标准SQL语句<br>因为标准SQL语句有可能返回各种各样的结果，比如多表查询，分组统计结果等等。 不能保证其查询结果能够装进一个Product对象中，所以返回的集合里的每一个元素是一个对象数组。 然后再通过下标把这个对象数组中的数据取出来。<br>代码比较</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">SessionFactory sf = <span class="keyword">new</span> Configuration().configure().buildSessionFactory();</div><div class="line"> </div><div class="line">Session s = sf.openSession();</div><div class="line">s.beginTransaction();</div><div class="line"></div><div class="line"><span class="comment">//需要模糊查询的字段 </span></div><div class="line">String name = <span class="string">"iphone"</span>;</div><div class="line"><span class="comment">//SQL语句</span></div><div class="line">String sql = <span class="string">"select * from product_ p where p.name like '%"</span>+name+<span class="string">"%'"</span>;</div><div class="line"><span class="comment">//根据SQL语句封装查询对象 </span></div><div class="line">Query q= s.createSQLQuery(sql);</div><div class="line"><span class="comment">//获取对象数组链表</span></div><div class="line">List&lt;Object[]&gt; list= q.list();</div><div class="line"><span class="keyword">for</span> (Object[] os : list) &#123;</div><div class="line">	<span class="keyword">for</span> (Object filed: os) &#123;</div><div class="line">		System.out.print(filed+<span class="string">"\t"</span>);</div><div class="line">	&#125;</div><div class="line">	System.out.println();</div><div class="line">&#125;</div><div class="line">         </div><div class="line">s.getTransaction().commit();</div><div class="line">s.close();</div><div class="line">sf.close();</div></pre></td></tr></table></figure>
+<h2 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系</h2><h3 id="多对一"><a href="#多对一" class="headerlink" title="多对一"></a>多对一</h3><blockquote>
+<p>有一个产品类，和一个产品的分类的类，每一个分类对应很多产品，那么相对于产品来说，产品和分类就是多对一的关系，要实现这种找关系需要在产品的映射文件中添加多对一的配置</p>
+</blockquote>
+<ul>
+<li>代码演示多对一的关系<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 产品类，每一个产品都有自己的分类信息</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Product</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> id;</div><div class="line">    String name;</div><div class="line">    <span class="keyword">float</span> price;</div><div class="line"></div><div class="line">    <span class="comment">//产品的分类信息（这是关键）</span></div><div class="line">    Category category;</div><div class="line">    <span class="function"><span class="keyword">public</span> Category <span class="title">getCategory</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> category;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCategory</span><span class="params">(Category category)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.category = category;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getId</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> id;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.id = id;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> name;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">float</span> <span class="title">getPrice</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> price;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPrice</span><span class="params">(<span class="keyword">float</span> price)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.price = price;</div><div class="line">    &#125;</div><div class="line">     </div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 产品的分类实体类</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Category</span> </span>&#123;</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getId</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> id;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.id = id;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> name;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">int</span> id;</div><div class="line">    String name;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">&lt;!-- 产品的分类信息类的映射文件 --&gt;</span></div><div class="line">&lt;?xml version="1.0"?&gt;</div><div class="line"> </div><div class="line"><span class="meta">&lt;!DOCTYPE hibernate-mapping PUBLIC</span></div><div class="line">        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"</div><div class="line">        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"&gt;</div><div class="line"><span class="tag">&lt;<span class="name">hibernate-mapping</span> <span class="attr">package</span>=<span class="string">"com.how2java.pojo"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">class</span> <span class="attr">name</span>=<span class="string">"Category"</span> <span class="attr">table</span>=<span class="string">"category_"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">id</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">column</span>=<span class="string">"id"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">generator</span> <span class="attr">class</span>=<span class="string">"native"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">generator</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">id</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"name"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">class</span>&gt;</span></div><div class="line">     </div><div class="line"><span class="tag">&lt;/<span class="name">hibernate-mapping</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">&lt;!-- 产品类的映射文件 --&gt;</span></div><div class="line">&lt;?xml version="1.0"?&gt;</div><div class="line"><span class="meta">&lt;!DOCTYPE hibernate-mapping PUBLIC</span></div><div class="line">        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"</div><div class="line">        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"&gt;</div><div class="line"> </div><div class="line"><span class="tag">&lt;<span class="name">hibernate-mapping</span> <span class="attr">package</span>=<span class="string">"com.how2java.pojo"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">class</span> <span class="attr">name</span>=<span class="string">"Product"</span> <span class="attr">table</span>=<span class="string">"product_"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">id</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">column</span>=<span class="string">"id"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">generator</span> <span class="attr">class</span>=<span class="string">"native"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">generator</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">id</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"name"</span> /&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"price"</span> /&gt;</span></div><div class="line">        <span class="comment">&lt;!-- 配置多对一的关系：</span></div><div class="line">			name:对应产品实体类中的分类属性</div><div class="line">			class:产品类中分类属性对应的类型</div><div class="line">			column:数据库中分类表指向产品表的外键</div><div class="line">         --&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">many-to-one</span> <span class="attr">name</span>=<span class="string">"category"</span> <span class="attr">class</span>=<span class="string">"Category"</span> <span class="attr">column</span>=<span class="string">"cid"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">class</span>&gt;</span></div><div class="line">     </div><div class="line"><span class="tag">&lt;/<span class="name">hibernate-mapping</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="一对多"><a href="#一对多" class="headerlink" title="一对多"></a>一对多</h3><blockquote>
+<p>对于上面一对多的例子，如果从Category的角度看，那么其和Product的关系就是一对多的关系。</p>
+</blockquote>
+<ul>
+<li>代码演示hibernate实现一对多</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 在上例的基础上为Category添加一个set集合表示一个分类里面所有的产品</div><div class="line">	 */</div><div class="line">	<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Category</span> </span>&#123;</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getId</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> id;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.id = id;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> name;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">int</span> id;</div><div class="line">    String name;</div><div class="line"></div><div class="line">    <span class="comment">//一个分类里面的所有产品集合</span></div><div class="line">    Set&lt;Product&gt; products;</div><div class="line">    <span class="function"><span class="keyword">public</span> Set&lt;Product&gt; <span class="title">getProducts</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> products;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setProducts</span><span class="params">(Set&lt;Product&gt; products)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.products = products;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">&lt;!-- 修改Category实体类的映射文件，配置一对多的关系 --&gt;</span></div><div class="line">&lt;?xml version="1.0"?&gt;</div><div class="line"><span class="meta">&lt;!DOCTYPE hibernate-mapping PUBLIC</span></div><div class="line">        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"</div><div class="line">        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"&gt;</div><div class="line"> </div><div class="line"><span class="tag">&lt;<span class="name">hibernate-mapping</span> <span class="attr">package</span>=<span class="string">"com.how2java.pojo"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">class</span> <span class="attr">name</span>=<span class="string">"Category"</span> <span class="attr">table</span>=<span class="string">"category_"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">id</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">column</span>=<span class="string">"id"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">generator</span> <span class="attr">class</span>=<span class="string">"native"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">generator</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">id</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"name"</span> /&gt;</span></div><div class="line"> 		<span class="comment">&lt;!-- 配置一对多的关系</span></div><div class="line">			name=“products”:对应Category里面的属性products</div><div class="line">			lazy=false:表示不适用懒加载</div><div class="line">			&lt;key column="cid" not-null="false" /&gt;:表示外键是cid，可以为空</div><div class="line">			&lt;one-to-many class="Product" /&gt;:表示一对多对应的类是Product</div><div class="line"> 		 --&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">set</span> <span class="attr">name</span>=<span class="string">"products"</span> <span class="attr">lazy</span>=<span class="string">"false"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">key</span> <span class="attr">column</span>=<span class="string">"cid"</span> <span class="attr">not-null</span>=<span class="string">"false"</span> /&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">one-to-many</span> <span class="attr">class</span>=<span class="string">"Product"</span> /&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">set</span>&gt;</span></div><div class="line">                 </div><div class="line">    <span class="tag">&lt;/<span class="name">class</span>&gt;</span></div><div class="line">     </div><div class="line"><span class="tag">&lt;/<span class="name">hibernate-mapping</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="多对多"><a href="#多对多" class="headerlink" title="多对多"></a>多对多</h3><blockquote>
+<p>一种Product可以被多个User购买<br>一个User可以购买多种Product,<br>所以Product和User之间的关系是多对多 many-to-many<br>要实现多对多关系，必须有一张中间表 user_product 用于维护 User和Product之间的关系</p>
+</blockquote>
+<ul>
+<li>代码演示hibernate实现多对多的关系</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * User对象</div><div class="line"> */</div><div class="line"> <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</div><div class="line"> </div><div class="line">    <span class="keyword">int</span> id;</div><div class="line">    String name;</div><div class="line"></div><div class="line">    <span class="comment">//用户购买的产品</span></div><div class="line">    Set&lt;Product&gt; products;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getId</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> id;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.id = id;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> name;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> Set&lt;Product&gt; <span class="title">getProducts</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> products;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setProducts</span><span class="params">(Set&lt;Product&gt; products)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.products = products;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 产品对象</div><div class="line"> */</div><div class="line"> <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Product</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> id;</div><div class="line">    String name;</div><div class="line">    <span class="keyword">float</span> price;</div><div class="line">    <span class="comment">//产品的分类信息</span></div><div class="line">    Category category;</div><div class="line"></div><div class="line">    <span class="comment">//产品被购买的用户对象集合</span></div><div class="line">    Set&lt;User&gt; users;</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">public</span> Set&lt;User&gt; <span class="title">getUsers</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> users;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUsers</span><span class="params">(Set&lt;User&gt; users)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.users = users;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> Category <span class="title">getCategory</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> category;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCategory</span><span class="params">(Category category)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.category = category;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getId</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> id;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.id = id;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> name;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">float</span> <span class="title">getPrice</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> price;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPrice</span><span class="params">(<span class="keyword">float</span> price)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.price = price;</div><div class="line">    &#125;</div><div class="line">     </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- 用户的映射文件 --&gt;</span></div><div class="line">&lt;?xml version="1.0"?&gt;</div><div class="line"><span class="meta">&lt;!DOCTYPE hibernate-mapping PUBLIC</span></div><div class="line">        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"</div><div class="line">        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"&gt;</div><div class="line"> </div><div class="line"><span class="tag">&lt;<span class="name">hibernate-mapping</span> <span class="attr">package</span>=<span class="string">"com.how2java.pojo"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">class</span> <span class="attr">name</span>=<span class="string">"User"</span> <span class="attr">table</span>=<span class="string">"user_"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">id</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">column</span>=<span class="string">"id"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">generator</span> <span class="attr">class</span>=<span class="string">"native"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">generator</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">id</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"name"</span> /&gt;</span></div><div class="line"> 		<span class="comment">&lt;!-- 配置用户和产品的多对一关系</span></div><div class="line">			name="products":User中的产品链表属性名称</div><div class="line">			table=“user_product”:多对多的数据库表</div><div class="line">			lazy="false":不适用懒加载</div><div class="line">			&lt;key column="uid" /&gt;:产品的主键</div><div class="line">			&lt;many-to-many column="pid" class="Product" /&gt;：用户的外键</div><div class="line"> 		 --&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">set</span> <span class="attr">name</span>=<span class="string">"products"</span> <span class="attr">table</span>=<span class="string">"user_product"</span> <span class="attr">lazy</span>=<span class="string">"false"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">key</span> <span class="attr">column</span>=<span class="string">"uid"</span> /&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">many-to-many</span> <span class="attr">column</span>=<span class="string">"pid"</span> <span class="attr">class</span>=<span class="string">"Product"</span> /&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">set</span>&gt;</span>        </div><div class="line">         </div><div class="line">    <span class="tag">&lt;/<span class="name">class</span>&gt;</span></div><div class="line">     </div><div class="line"><span class="tag">&lt;/<span class="name">hibernate-mapping</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">&lt;!-- 产品的映射文件 --&gt;</span></div><div class="line">&lt;?xml version="1.0"?&gt;</div><div class="line"><span class="meta">&lt;!DOCTYPE hibernate-mapping PUBLIC</span></div><div class="line">        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"</div><div class="line">        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"&gt;</div><div class="line"> </div><div class="line"><span class="tag">&lt;<span class="name">hibernate-mapping</span> <span class="attr">package</span>=<span class="string">"com.how2java.pojo"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">class</span> <span class="attr">name</span>=<span class="string">"Product"</span> <span class="attr">table</span>=<span class="string">"product_"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">id</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">column</span>=<span class="string">"id"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">generator</span> <span class="attr">class</span>=<span class="string">"native"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">generator</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">id</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"name"</span> /&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"price"</span> /&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">many-to-one</span> <span class="attr">name</span>=<span class="string">"category"</span> <span class="attr">class</span>=<span class="string">"Category"</span> <span class="attr">column</span>=<span class="string">"cid"</span> /&gt;</span></div><div class="line">        <span class="comment">&lt;!-- 配置多对多的关系</span></div><div class="line">			name="users":Product中的用户属性</div><div class="line">			table="user_product":多对多的数据库表</div><div class="line">			lazy="false":不设置懒加载</div><div class="line">			&lt;key column="pid" /&gt;:Product类在多对多数据库表中的主键名称</div><div class="line">			&lt;many-to-many column="uid" class="User" /&gt;:</div><div class="line">         --&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">set</span> <span class="attr">name</span>=<span class="string">"users"</span> <span class="attr">table</span>=<span class="string">"user_product"</span> <span class="attr">lazy</span>=<span class="string">"false"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">key</span> <span class="attr">column</span>=<span class="string">"pid"</span> /&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">many-to-many</span> <span class="attr">column</span>=<span class="string">"uid"</span> <span class="attr">class</span>=<span class="string">"User"</span> /&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">set</span>&gt;</span>        </div><div class="line">                 </div><div class="line">    <span class="tag">&lt;/<span class="name">class</span>&gt;</span></div><div class="line">     </div><div class="line"><span class="tag">&lt;/<span class="name">hibernate-mapping</span>&gt;</span></div></pre></td></tr></table></figure>
+<h2 id="各类概念"><a href="#各类概念" class="headerlink" title="各类概念"></a>各类概念</h2><h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><blockquote>
+<p>Hibernate的对任何数据有改动的操作，都应该被放在事务里面.<br>在事务中的多个操作行为，要么都成功，要么都失败</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">Session s = sf.openSession();</div><div class="line"><span class="comment">//开启事务</span></div><div class="line">s.beginTransaction(); </div><div class="line"></div><div class="line"><span class="comment">//下面是事务的逻辑代码</span></div><div class="line">Product p = (Product) s.get(Product.class, <span class="number">1</span>);</div><div class="line">s.delete(p); </div><div class="line">Product p2 = (Product) s.get(Product.class, <span class="number">2</span>);</div><div class="line">p2.setName(<span class="string">"长度超过30的字符串作为产品名称长度超过30的字符串作为产品名称长度超过30的字符串作为产品名称长度超过30的字符串作为产品名称"</span>);</div><div class="line">s.update(p2); </div><div class="line"></div><div class="line"><span class="comment">//提交事务</span></div><div class="line">s.getTransaction().commit();</div></pre></td></tr></table></figure>
+<h3 id="属性延迟加载"><a href="#属性延迟加载" class="headerlink" title="属性延迟加载"></a>属性延迟加载</h3><blockquote>
+<p>属性的延迟加载：当使用<code>load</code>的方式来获取对象的时候，只有访问了这个对象的属性，hibernate才会到数据库中进行查询。否则不会访问数据库</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Product p = (Product)s.load(Product.class, <span class="number">1</span>);</div><div class="line">System.out.println(<span class="string">"log1"</span>);</div><div class="line"><span class="comment">//到这里才会访问数据库</span></div><div class="line">System.out.println(p.getName());</div><div class="line">System.out.println(<span class="string">"log2"</span>);</div></pre></td></tr></table></figure>
+<h3 id="关系延迟加载"><a href="#关系延迟加载" class="headerlink" title="关系延迟加载"></a>关系延迟加载</h3><blockquote>
+<p>延迟加载又叫lazyload，在one-many many-many的时候都可以使用关系的延迟加载</p>
+</blockquote>
+<ul>
+<li><p>通过配置文件设置懒加载</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">set</span> <span class="attr">name</span>=<span class="string">"products"</span> <span class="attr">lazy</span>=<span class="string">"true"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">key</span> <span class="attr">column</span>=<span class="string">"cid"</span> <span class="attr">not-null</span>=<span class="string">"false"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">one-to-many</span> <span class="attr">class</span>=<span class="string">"Product"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">set</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>代码演示</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Session s = sf.openSession();</div><div class="line">s.beginTransaction();</div><div class="line">Category c = (Category) s.get(Category.class, <span class="number">1</span>); </div><div class="line">System.out.println(<span class="string">"log1"</span>);</div><div class="line"><span class="comment">//到这里才访问数据库</span></div><div class="line">System.out.println(c.getProducts());</div><div class="line">System.out.println(<span class="string">"log1"</span>); </div><div class="line">s.getTransaction().commit();</div><div class="line">s.close();</div><div class="line">sf.close();</div></pre></td></tr></table></figure>
+<h3 id="级联"><a href="#级联" class="headerlink" title="级联"></a>级联</h3><ul>
+<li>什么是级联<blockquote>
+<p>简单来说就是操作一个数据库表会影响另一个数据库表里面记录</p>
+</blockquote>
+</li>
+<li>4中级联</li>
+</ul>
+<ol>
+<li>all:所有操作都执行级联操作</li>
+<li>none：所有操作都不执行级联操作</li>
+<li>delete：删除时执行级联 </li>
+<li>save-update：保存和更新时执行级联操作</li>
+</ol>
+<ul>
+<li><p>delete级联</p>
+<blockquote>
+<p>在一对多的映射文件中增加如下的配置即可实现级联删除：当删除一个分类时，与其相对于的Product也会被删除</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;set name=<span class="string">"products"</span> cascade=<span class="string">"delete"</span> lazy=<span class="string">"false"</span>&gt;</div></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>save-update级联</p>
+<blockquote>
+<p>在一对多的映射文件中增加如下的配置即可实现级联更新的功能：当更新一个分类下的产品时，会保存相应的产品</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">SessionFactory sf = <span class="keyword">new</span> Configuration().configure().buildSessionFactory();</div><div class="line">Session s = sf.openSession();</div><div class="line">s.beginTransaction();</div><div class="line"><span class="comment">//获取一个分类</span></div><div class="line">Category c = (Category) s.get(Category.class, <span class="number">5</span>);    </div><div class="line"><span class="comment">//新增几个产品     </span></div><div class="line">Product p1 = <span class="keyword">new</span> Product();</div><div class="line">p1.setName(<span class="string">"product_501"</span>);</div><div class="line">Product p2 = <span class="keyword">new</span> Product();</div><div class="line">p2.setName(<span class="string">"product_502"</span>);</div><div class="line">Product p3 = <span class="keyword">new</span> Product();</div><div class="line">p3.setName(<span class="string">"product_503"</span>); </div><div class="line"><span class="comment">//将产品添加入分类</span></div><div class="line">c.getProducts().add(p1);</div><div class="line">c.getProducts().add(p2);</div><div class="line">c.getProducts().add(p3);</div><div class="line"> </div><div class="line"><span class="comment">//事务一旦提交，数据库中将会持久化三个产品</span></div><div class="line">s.getTransaction().commit();</div><div class="line">s.close();</div><div class="line">sf.close();</div></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>all和none级联操作</p>
+<blockquote>
+<p>all就是delete+save+update<br>none就是没有，默认是none</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="一级缓存"><a href="#一级缓存" class="headerlink" title="一级缓存"></a>一级缓存</h3><blockquote>
+<p>hibernate默认是开启一级缓存的，缓存是在session上。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">SessionFactory sf = <span class="keyword">new</span> Configuration().configure().buildSessionFactory();</div><div class="line">   </div><div class="line">Session s = sf.openSession();</div><div class="line">s.beginTransaction();</div><div class="line">System.out.println(<span class="string">"log1"</span>);</div><div class="line">Category c1 = (Category)s.get(Category.class, <span class="number">1</span>);</div><div class="line">System.out.println(<span class="string">"log2"</span>);</div><div class="line"><span class="comment">//这次并没有请求数据库，从session的缓存中取出数据</span></div><div class="line">Category c2= (Category)s.get(Category.class, <span class="number">1</span>);</div><div class="line">System.out.println(<span class="string">"log3"</span>);        </div><div class="line"> </div><div class="line">s.getTransaction().commit();</div><div class="line">s.close();</div><div class="line">sf.close();</div></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="二级缓存"><a href="#二级缓存" class="headerlink" title="二级缓存"></a>二级缓存</h3><blockquote>
+<p>创建两个session<br>在第一个session里，第一次获取id=1的Category会执行SQL语句<br>第二次获取ID=1的Category，不会执行SQL语句，因为有一级缓存<br>在第二个session里<br>获取ID=1的Category，会执行SQL语句，因为在第二个session，没有缓存该对象。这是没有开启二级缓存的情况</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">SessionFactory sf = <span class="keyword">new</span> Configuration().configure().buildSessionFactory();</div><div class="line"> </div><div class="line">Session s = sf.openSession();</div><div class="line">s.beginTransaction();</div><div class="line">Category p1 = (Category) s.get(Category.class, <span class="number">1</span>);</div><div class="line"><span class="comment">//由于一级缓存的存在，所以这个语句不会请求数据库，不会执行SQL语句</span></div><div class="line">Category p2 = (Category) s.get(Category.class, <span class="number">1</span>);</div><div class="line">s.getTransaction().commit();</div><div class="line">s.close();</div><div class="line">Session s2 = sf.openSession();</div><div class="line">s2.beginTransaction();</div><div class="line"><span class="comment">//由于不存在二级缓存，该语句会请求数据库连接，执行SQL语句</span></div><div class="line">Category p3 = (Category) s2.get(Category.class, <span class="number">1</span>);</div><div class="line"> </div><div class="line">s2.getTransaction().commit();</div><div class="line">s2.close();</div><div class="line">sf.close();</div></pre></td></tr></table></figure>
+<ul>
+<li>在hibernate.cfg.xml中增加对二级缓存的配置<blockquote>
+<p>hibernate本身不提供二级缓存，都是使用第三方的二级缓存插件，这里使用的是EhCache提供的二级缓存</p>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- 开启二级缓存的功能 --&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.cache.use_second_level_cache"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">      <span class="comment">&lt;!-- 提供实现二级缓存的第三方插件 --&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.cache.provider_class"</span>&gt;</span>org.hibernate.cache.EhCacheProvider<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div></pre></td></tr></table></figure>
+<ul>
+<li>配置二级缓存（ehcache.xml）<blockquote>
+<p>在src目录下，创建一个ehcache.xml用于EhCache的缓存配置</p>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ehcache</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">diskStore</span> <span class="attr">path</span>=<span class="string">"java.io.tmpdir"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">defaultCache</span></span></div><div class="line">        <span class="attr">maxElementsInMemory</span>=<span class="string">"10000"</span></div><div class="line">        <span class="attr">eternal</span>=<span class="string">"false"</span></div><div class="line">        <span class="attr">timeToIdleSeconds</span>=<span class="string">"120"</span></div><div class="line">        <span class="attr">timeToLiveSeconds</span>=<span class="string">"120"</span></div><div class="line">        <span class="attr">overflowToDisk</span>=<span class="string">"true"</span></div><div class="line">        /&gt;</div><div class="line"><span class="tag">&lt;/<span class="name">ehcache</span>&gt;</span></div></pre></td></tr></table></figure>
+<ul>
+<li>设置HBM<blockquote>
+<p>对于要进行二级缓存的实体类，进行配置，增加<code>&lt;cache usage=&quot;read-only&quot; /&gt;</code></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="分页"><a href="#分页" class="headerlink" title="分页"></a>分页</h3><blockquote>
+<p>hibernate使用Criteria来进行分页查询</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">SessionFactory sf = <span class="keyword">new</span> Configuration().configure().buildSessionFactory();</div><div class="line"></div><div class="line">      Session s = sf.openSession();</div><div class="line">      s.beginTransaction();</div><div class="line"></div><div class="line">      String name = <span class="string">"iphone"</span>;</div><div class="line">        </div><div class="line">      Criteria c= s.createCriteria(Product.class);</div><div class="line">      c.add(Restrictions.like(<span class="string">"name"</span>, <span class="string">"%"</span>+name+<span class="string">"%"</span>));</div><div class="line">      <span class="comment">//表示从第二条记录开始</span></div><div class="line">      c.setFirstResult(<span class="number">2</span>);</div><div class="line">      <span class="comment">//表示一共查询5条数据</span></div><div class="line">      c.setMaxResults(<span class="number">5</span>);</div><div class="line">       </div><div class="line">      List&lt;Product&gt; ps = c.list();</div><div class="line">      <span class="keyword">for</span> (Product p : ps) &#123;</div><div class="line">          System.out.println(p.getName());</div><div class="line">           </div><div class="line">      &#125;</div><div class="line">        </div><div class="line">      s.getTransaction().commit();</div><div class="line">      s.close();</div><div class="line">      sf.close();</div></pre></td></tr></table></figure>
+<h3 id="两种获取方式"><a href="#两种获取方式" class="headerlink" title="两种获取方式"></a>两种获取方式</h3><blockquote>
+<p><code>load</code>方式是延迟加载，只有属性被访问的时候才会调用SQL语句<br><code>get</code>方式是非延迟加载，无论后面的代码是否访问到属性，马上执行SQL语句<br>对于ID不存在的对象，<code>get</code>方式会返回null,<code>load</code>方式会抛出异常</p>
+</blockquote>
+<h3 id="两种session方式"><a href="#两种session方式" class="headerlink" title="两种session方式"></a>两种session方式</h3><blockquote>
+<p>hibernate有两种方式获得session，分别是OpenSession和getCurrentSession<br>他们的区别在于</p>
+<ul>
+<li>获取的是否是同一个session对象：OpenSession每次都会得到一个新的Session对象，getCurrentSession在同一个线程中，每次都是获取相同的Session对象，但是在不同的线程中获取的是不同的Session对象</li>
+<li>事务提交的必要性：openSession只要在增加，删除，修改的时候需要事务，查询时不需要，getCurrentSession是所有操作都必须放在事务中进行，并且提交事务后，session就自动关闭，不能够再进行关闭。</li>
+</ul>
+</blockquote>
+<h3 id="N-1"><a href="#N-1" class="headerlink" title="N+1"></a>N+1</h3><blockquote>
+<p>Hibernate有缓存机制，可以通过用id作为key把product对象保存在缓存中 </p>
+<p>同时hibernate也提供Query的查询方式。假设数据库中有100条记录，其中有30条记录在缓存中，但是使用Query的的list方法，就会所有的100条数据都从数据库中查询，而无视这30条缓存中的记录 </p>
+<p>N+1是什么意思呢，首先执行一条sql语句，去查询这100条记录，但是，只返回这100条记录的ID<br>然后再根据id,进行进一步查询。 </p>
+<p>如果id在缓存中，就从缓存中获取product对象了，否则再从数据库中获取</p>
+</blockquote>
+<h3 id="查询总数"><a href="#查询总数" class="headerlink" title="查询总数"></a>查询总数</h3><blockquote>
+<p>首先准备一个有统计函数的sql语句<br><code>select count(*) from ...</code><br>根据这条SQL语句创建一个查询对象，调用query对象的uniqueResult()方法，返回一个long型的数据，即查询总数。</p>
+</blockquote>
+<h3 id="C3P0连接池"><a href="#C3P0连接池" class="headerlink" title="C3P0连接池"></a>C3P0连接池</h3><blockquote>
+<p>建立数据库连接时比较消耗时间的，所以通常都会采用数据库连接池的技术来建立多条数据库连接，并且在将&gt; 来持续使用，从而节约掉建立数据库连接的时间<br>hibernate本身是提供了数据库连接池的，但是hibernate官网也不推荐使用他自带的数据库连接池。<br>一般都会使用第三方的数据库连接池<br>C3P0是免费的第三方的数据库连接池，并且有不错的表现<br>在并发量不是很大的时候，不配置数据库连接池和配置了数据库连接池差别不是很大。只有在并发量比较大的时候，才能体现出数据库连接池的优势。</p>
+</blockquote>
+<ul>
+<li><p>进行c3p0连接池的配置(在hibernate的配置文件中配置)</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.connection.provider_class"</span>&gt;</span>  </div><div class="line">            org.hibernate.connection.C3P0ConnectionProvider  </div><div class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span>  </div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.c3p0.max_size"</span>&gt;</span>20<span class="tag">&lt;/<span class="name">property</span>&gt;</span>  </div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.c3p0.min_size"</span>&gt;</span>5<span class="tag">&lt;/<span class="name">property</span>&gt;</span>  </div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.c3p0.timeout"</span>&gt;</span>50000<span class="tag">&lt;/<span class="name">property</span>&gt;</span>  </div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.c3p0.max_statements"</span>&gt;</span>100<span class="tag">&lt;/<span class="name">property</span>&gt;</span>  </div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.c3p0.idle_test_period"</span>&gt;</span>3000<span class="tag">&lt;/<span class="name">property</span>&gt;</span>  </div><div class="line">        <span class="comment">&lt;!-- 当连接池耗尽并接到获得连接的请求，则新增加连接的数量 --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.c3p0.acquire_increment"</span>&gt;</span>2<span class="tag">&lt;/<span class="name">property</span>&gt;</span>  </div><div class="line">        <span class="comment">&lt;!-- 是否验证，检查连接 --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hibernate.c3p0.validate"</span>&gt;</span>false<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>Category.hbm.xml</p>
+<blockquote>
+<p>配置了数据库连接池需要把实体类的映射文件的二级缓存的配置去除</p>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">hibernate-mapping</span> <span class="attr">package</span>=<span class="string">"com.how2java.pojo"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">class</span> <span class="attr">name</span>=<span class="string">"Category"</span> <span class="attr">table</span>=<span class="string">"category_"</span>&gt;</span></div><div class="line"><span class="comment">&lt;!--     &lt;cache usage="read-only" /&gt;--&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">id</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">column</span>=<span class="string">"id"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">generator</span> <span class="attr">class</span>=<span class="string">"native"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">generator</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">id</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"name"</span> /&gt;</span></div><div class="line"> </div><div class="line">        <span class="tag">&lt;<span class="name">set</span> <span class="attr">name</span>=<span class="string">"products"</span> <span class="attr">lazy</span>=<span class="string">"true"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">key</span> <span class="attr">column</span>=<span class="string">"cid"</span> <span class="attr">not-null</span>=<span class="string">"false"</span> /&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">one-to-many</span> <span class="attr">class</span>=<span class="string">"Product"</span> /&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">set</span>&gt;</span></div><div class="line">                 </div><div class="line">    <span class="tag">&lt;/<span class="name">class</span>&gt;</span></div><div class="line">     </div><div class="line"><span class="tag">&lt;/<span class="name">hibernate-mapping</span>&gt;</span></div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/02/Java泛型编程/" rel="next" title="Java泛型编程">
+                <i class="fa fa-chevron-left"></i> Java泛型编程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="huangting" />
+          <p class="site-author-name" itemprop="name">huangting</p>
+           
+              <p class="site-description motion-element" itemprop="description">一个会打篮球的程序员</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础"><span class="nav-number">1.</span> <span class="nav-text">基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#hello-hibernate"><span class="nav-number">1.1.</span> <span class="nav-text">hello hibernate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入"><span class="nav-number">1.2.</span> <span class="nav-text">插入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对象状态"><span class="nav-number">1.3.</span> <span class="nav-text">对象状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取"><span class="nav-number">1.4.</span> <span class="nav-text">获取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除"><span class="nav-number">1.5.</span> <span class="nav-text">删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改"><span class="nav-number">1.6.</span> <span class="nav-text">修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询-hql"><span class="nav-number">1.7.</span> <span class="nav-text">查询-hql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询-Criteria"><span class="nav-number">1.8.</span> <span class="nav-text">查询-Criteria</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询-标准sql"><span class="nav-number">1.9.</span> <span class="nav-text">查询-标准sql</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关系"><span class="nav-number">2.</span> <span class="nav-text">关系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#多对一"><span class="nav-number">2.1.</span> <span class="nav-text">多对一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一对多"><span class="nav-number">2.2.</span> <span class="nav-text">一对多</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多对多"><span class="nav-number">2.3.</span> <span class="nav-text">多对多</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#各类概念"><span class="nav-number">3.</span> <span class="nav-text">各类概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#事务"><span class="nav-number">3.1.</span> <span class="nav-text">事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#属性延迟加载"><span class="nav-number">3.2.</span> <span class="nav-text">属性延迟加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关系延迟加载"><span class="nav-number">3.3.</span> <span class="nav-text">关系延迟加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#级联"><span class="nav-number">3.4.</span> <span class="nav-text">级联</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一级缓存"><span class="nav-number">3.5.</span> <span class="nav-text">一级缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二级缓存"><span class="nav-number">3.6.</span> <span class="nav-text">二级缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分页"><span class="nav-number">3.7.</span> <span class="nav-text">分页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两种获取方式"><span class="nav-number">3.8.</span> <span class="nav-text">两种获取方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两种session方式"><span class="nav-number">3.9.</span> <span class="nav-text">两种session方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#N-1"><span class="nav-number">3.10.</span> <span class="nav-text">N+1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询总数"><span class="nav-number">3.11.</span> <span class="nav-text">查询总数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C3P0连接池"><span class="nav-number">3.12.</span> <span class="nav-text">C3P0连接池</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">huangting</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
